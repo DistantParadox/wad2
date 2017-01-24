@@ -14,6 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates', 'rango')
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,6 +27,14 @@ SECRET_KEY = 'nddl32_y_bl(@o0e&)la-+9@mj=!(kl_xv!434_d48sts4*q8@'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+
+# FOR DEBUGGING
+print(__file__)
+print(os.path.dirname(__file__))
+print(os.path.dirname(os.path.dirname(__file__)))
+print("BASE_DIR:  " + BASE_DIR)
+print("TEMPLATE_DIR:  " + TEMPLATE_DIR)
 
 
 # Application definition
@@ -55,7 +64,7 @@ ROOT_URLCONF = 'tango_with_django_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR, ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
