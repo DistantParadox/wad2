@@ -16,6 +16,8 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'tango_with_django_project', 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'tango_with_django_project', 'static')
+MEDIA_DIR = os.path.join(BASE_DIR, 'tango_with_django_project', 'media')
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -28,14 +30,6 @@ SECRET_KEY = 'nddl32_y_bl(@o0e&)la-+9@mj=!(kl_xv!434_d48sts4*q8@'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-
-# FOR DEBUGGING
-print(__file__)
-print(os.path.dirname(__file__))
-print(os.path.dirname(os.path.dirname(__file__)))
-print("BASE_DIR:  " + BASE_DIR)
-print("TEMPLATE_DIR:  " + TEMPLATE_DIR)
 
 
 # Application definition
@@ -75,6 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+		'django.template.context_processors.media'
             ],
         },
     },
@@ -133,3 +128,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [STATIC_DIR, ]
+
+
+# Media files
+MEDIA_ROOT = MEDIA_DIR
+MEDIA_URL = '/media/'
+
