@@ -7,6 +7,7 @@ from rango.forms import UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
 
 # Each view exists as a series of individual functions.
 def index(request):
@@ -24,14 +25,17 @@ def index(request):
     # Note the key boldmessage is the same as {{ boldmessage }} in the template!
     context_dict = {'categories': category_list, 'pages': pages_list}
 
-    # Return a rendered response to send to the client.
-    # We make use of the shortcut function to make out lives easier
-    # Note that the first parameter is the template we wish to use.
-    # return render(request, 'rango/index.html', context_dict)
-    return render(request, 'rango/index.html', context_dict)
-    #return HttpResponse("Rango says hey there partner!     <a href='/rango/about'>About</a>")
+    # Obtain our response object early so we can add cookie information.
+    response = render(request, 'rango/index.html', context_dict)
+
+    # Call function to handle the cookies
+    visitor_cookie_handler(request, response)
+
+    # Return response back to the user, updating any cookies that need changed
+    return response
 
 def about(request):
+
     # prints out whether the method is a GET or a POST
     print(request.method)
     # prints out the user name, if no one is logged in it prints 'AnonymousUser'
@@ -224,4 +228,21 @@ def user_logout(request):
     logout(request)
     # Take the user back to the homepage
     return HttpResponseRedirect(reverse('index'))
+
+def visitor_cookie_handler(request, response):
+    visits = int(request.COOKIES.get('visits', '1'))
+
+    last_visit_cookie = request.COOKIES.get('last_visit', str(datetime.now()))
+    last_visit_time = datetime.strptime(last_visit_cookie[:-7],
+        '%Y-%m-%d %H:%M:%S')
+
+    if (datetime.now() - last_visit_time).days > 0:
+        visits = visits + 1
+	response.set_cookie('last_visit', str(datetime.now()))
+    else:
+        visits = 1
+	response.set_cookie('last_visit', last_visit_cookie)
+
+    # Update/set the visits cookie
+    response.set_cookie('visits', visits)
 
